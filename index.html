@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>MCDP Анализатор</title>
+       <link rel="stylesheet" href="style.css">
+       
+    </head>
+
+    <body>
+        <div class="main-content">
+            <h4>Add interval files (Ref & Query)</h4>
+            <div class="hidden-input">
+                <input type="file" id="fileInput1">
+            </div>
+            <div class="hidden-input">
+                <input type="file" id="fileInput2">
+            </div>
+            <div>
+                <h4>Add chromosome length file</h4>
+                <div class="hidden-input">
+                    <input type="file" id="fileInputLength">
+                </div>            
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button type="button" id="submit-btn" disabled>Submit</button>
+            </div>
+
+            <div id="status" style="margin-top: 15px; font-weight: bold; color: white;">Waiting for initialization...</div>
+            
+            <pre id="output" style="background: #1e293b; color: #38bdf8; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: left; max-height: 350px; overflow-y: auto; font-family: monospace; font-size: 13px; border: 1px solid #334155;"></pre>
+        </div>
+        
+        <script type="module" src="script.js"></script>
+    </body>
+</html>
