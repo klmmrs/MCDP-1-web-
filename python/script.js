@@ -1,6 +1,5 @@
 let pyodideInstance = null;
 
-// Safe environment initialization in the main thread
 async function initPyodide() {
     const status = document.getElementById('status');
     const btn = document.getElementById('submit-btn');
@@ -52,7 +51,6 @@ async function initPyodide() {
 
 window.addEventListener('DOMContentLoaded', initPyodide);
 
-// Fast browser-side stream pre-filtering
 function optimizeFileContent(text, isLengthFile = false) {
     const lines = text.split('\n');
     const optimizedLines = [];
@@ -151,7 +149,7 @@ document.getElementById('submit-btn')?.addEventListener('click', async () => {
             try:
                 mcdp.set_root_logger(None)
                 
-                # Using the mathematically safe and existing "direct_eigen" method
+                
                 mcdp.main(
                     'input_file1.txt', 
                     'input_file2.txt', 
