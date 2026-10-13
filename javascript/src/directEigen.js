@@ -277,8 +277,6 @@ export function evalProbsSingleDirectLmEigen(r, q, chrSize) {
             const TGap = E.expT(gap);
             const DLength = E.expD(length);
 
-            // dont_hit =
-            // P[j-1, k] * T^g * D^l
             const dontHitMatrix =
                 multiplyMatrices(
                     TGap,
@@ -291,8 +289,6 @@ export function evalProbsSingleDirectLmEigen(r, q, chrSize) {
                     dontHitMatrix
                 );
 
-            // hit =
-            // P[j-1, k-1] * T^g * (T^l - D^l)
             const TLength = E.expT(length);
 
             const difference =
@@ -313,7 +309,6 @@ export function evalProbsSingleDirectLmEigen(r, q, chrSize) {
                     hitMatrix
                 );
 
-            // P[j,k] = dont_hit + hit
             nextLine[j] = [
                 dontHit[0] + hit[0],
                 dontHit[1] + hit[1]
@@ -322,24 +317,12 @@ export function evalProbsSingleDirectLmEigen(r, q, chrSize) {
 
         lastCol[k] = [...nextLine[m]];
 
-        // Python:
-        //
-        // for j in range(m+1):
-        //     prev_line[j, 0] = next_line[j, 0]
-        //     prev_line[j, 1] = next_line[j, 1]
-
         for (let j = 0; j <= m; j++) {
             prevLine[j][0] = nextLine[j][0];
             prevLine[j][1] = nextLine[j][1];
         }
     }
 
-    // Python:
-    //
-    // probs = [
-    //     np.log(np.sum(last_col[k, :]))
-    //     for k in range(m + 1)
-    // ]
 
     return lastCol.map(row => {
         const probability = row[0] + row[1];
