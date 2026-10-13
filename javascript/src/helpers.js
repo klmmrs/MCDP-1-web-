@@ -6,7 +6,6 @@ export function loadIntervals(content, isClosed = false) {
     for (let lnum = 0; lnum < lines.length; lnum++) {
         const line = lines[lnum];
 
-        // Пропускаем пустые строки
         if (line.trim().length === 0) {
             continue;
         }
@@ -75,8 +74,6 @@ export function loadChrSizes(content) {
 
     for (let lnum = 0; lnum < lines.length; lnum++) {
         const line = lines[lnum];
-
-        // Пропускаем пустые строки
         if (line.trim().length === 0) {
             continue;
         }
@@ -116,7 +113,6 @@ export function loadChrSizes(content) {
 export function countOverlapsSingleChromosome(r, q) {
     const events = [];
 
-    // Reference intervals
     for (const [begin, end] of r) {
         events.push({
             position: begin,
@@ -131,7 +127,6 @@ export function countOverlapsSingleChromosome(r, q) {
         });
     }
 
-    // Query intervals
     for (const [begin, end] of q) {
         events.push({
             position: begin,
@@ -145,23 +140,18 @@ export function countOverlapsSingleChromosome(r, q) {
             isEnd: true
         });
     }
-
-    // Специальное событие в конце,
-    // аналог math.inf в Python
     events.push({
         position: Infinity,
         type: "query",
         isEnd: false
     });
 
-    // Python: sorted(ends)
     events.sort((a, b) => {
         if (a.position !== b.position) {
             return a.position - b.position;
         }
 
-        // В Python tuple сортируется следующим образом:
-        // (position, type, isEnd)
+
         if (a.type !== b.type) {
             return a.type === "reference" ? -1 : 1;
         }
@@ -198,23 +188,23 @@ export function countOverlapsSingleChromosome(r, q) {
             }
         }
 
-        // Reference interval starts
+     
         if (type === "reference" && !isEnd) {
             isCurrentReferenceCounted = false;
             isReferenceOpen = true;
         }
 
-        // Reference interval ends
+       
         if (type === "reference" && isEnd) {
             isReferenceOpen = false;
         }
 
-        // Query interval starts
+      
         if (type === "query" && !isEnd) {
             isQueryOpen = true;
         }
 
-        // Query interval ends
+    
         if (type === "query" && isEnd) {
             isQueryOpen = false;
         }
@@ -313,14 +303,12 @@ export function countOverlaps(r, q) {
 }
 
 export function mergeNondisjointIntervals(intervals) {
-    // Python:
-    // intervals = filter(lambda interval: interval[1] < interval[2], intervals)
-    // Здесь оставляем только интервалы begin < end.
+
     const filtered = intervals.filter(
         interval => interval.begin < interval.end
     );
 
-    // Python sorted(intervals)
+
     const sorted = [...filtered].sort(compareIntervals);
 
     if (sorted.length < 2) {
@@ -334,22 +322,20 @@ export function mergeNondisjointIntervals(intervals) {
     for (let i = 1; i < sorted.length; i++) {
         const next = sorted[i];
 
-        // Другая хромосома
+    
         if (next.chrName !== current.chrName) {
             result.push(current);
             current = { ...next };
             continue;
         }
 
-        // Есть положительный промежуток между интервалами.
-        // Тогда они не объединяются.
+
         if (current.end < next.begin) {
             result.push(current);
             current = { ...next };
             continue;
         }
 
-        // Интервалы пересекаются или соприкасаются.
         current.end = Math.max(current.end, next.end);
     }
 
