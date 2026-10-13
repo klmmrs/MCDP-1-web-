@@ -78,7 +78,8 @@ submitButton.addEventListener("click", async () => {
             `Query file: ${queryFile.name}\n` +
             `Chromosome sizes: ${chrSizesFile.name}\n\n` +
             `Overlap count: ${result.overlapCount}\n` +
-            `P-value: ${result.pvalue}`;
+            `P-value: ${result.pvalue}` +
+            `Calculation time: ${result.calculationTime.toFixed(3)} seconds`;
 
 
     } catch (error) {
